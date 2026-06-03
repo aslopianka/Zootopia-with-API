@@ -1,8 +1,5 @@
 import json
-import requests
-
-ANIMALS_API_URL = "https://api.api-ninjas.com/v1/animals"
-API_KEY = "UvCmNExEFbxvWgBcykOGTOMmMdkSWHgrCJaLbBLM"
+import data_fetcher
 
 
 def load_data(file_path):
@@ -10,15 +7,6 @@ def load_data(file_path):
   with open(file_path, "r") as handle:
     return json.load(handle)
 
-
-def fetch_animal_data(animal_search_term):
-    query_params = {'name': animal_search_term}
-    api_headers = {"X-Api-Key": API_KEY}
-
-    res = requests.get(ANIMALS_API_URL, params=query_params, headers=api_headers)
-    if res.status_code == 200:
-        return res.json()
-    return []
 
 def serialize_animal(animals_data):
 
@@ -65,7 +53,7 @@ def write_html_file(file_path, content):
 
 def main():
     animal_search_term = input("Enter the animal you would like to search: ")
-    animal_data = fetch_animal_data(animal_search_term)
+    animal_data = data_fetcher.fetch_data(animal_search_term)
     if not animal_data:
         output_string = f"""
             <div style="text-align: center; margin: 40px auto; max-width: 500px;">
